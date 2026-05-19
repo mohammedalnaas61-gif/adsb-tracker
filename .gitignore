@@ -1,8 +1,7 @@
-# Tools (large binaries — download separately)
-tools/
+# Zip archives (not needed — extracted versions are included)
+*.zip
 
 # Build artifacts
-*.zip
 *.o
 *.obj
 
