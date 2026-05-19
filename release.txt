@@ -1,0 +1,337 @@
+Build 100 - 17/03/2013
+
+- HTTP server established - see http://rtl1090.jetvision.de - Manual
+section 5 for details
+- double dialog on exit debugged
+- Sisex: folder selection dialog debugged
+
+============================================================================
+Build 95 - 24/02/2013
+
+- Reprogramming of serial number in RTL2832U EEPROM added
+- Starting dongle with specific serial number option added
+(Command line switch "/ser=xxx", where xxx is "0" to "999" (no left padding zeros))
+- Output format Beast ASCII added (command line switch "/ascii")
+
+Introduction to serial number selective operations (R820T dongles only)
+=======================================================================
+This chapter is only interesting to those users that operate more than one dongle
+intheir installation AND want to assign specific RTL1090 instances to a specific dongle
+and/or a specific TCP port. If you operate one dongle only, this chapter does not
+contain any additonal information.
+
+1) (Re-)Programming a serial number
+R820T dongles come with a serial number "13" usually
+
+- I strongly recommend not to alter the serial number of the first dongle you
+operate. Leave it at "13"
+
+- For any other dongles that you want to operate select a serial number of your
+choice between 0 and 999
+
+- It is strongly recommended to note the serial number on the dongle, e.g. with
+a sticker
+
+- To reprogram a serial number disconnect all RTL2832U devices from your computer.
+Then reconnect the dongle that you want to program.
+
+- Close all open instances of RTL1090, then restart RTL1090 with command line
+option "/eeprom". All other options can remain in your command line, but will be ignored during
+programming operations
+
+- START RTL1090 as usual
+
+- From the dialog change the serial number to your desired value.
+
+- Acknowledge disclaimers or abort as desired
+
+- Once reprogramming is completed or aborted, close RTL1090. Remove the "/eeprom" option from
+the command line
+
+2) Operating with select serial numbered devices
+
+Create icons for your dongles that you want to run with RTL1090 simultaneously. Setup
+the start-up data for each icon individually, so that the icons will start their individual
+RTL1090 instance
+
+Enter the serial number into your command line after the switch "/ser=". E.g. a dongle with
+serial number 14 would get a "/ser=14" entry.
+
+For the typical R820T dongle (the one you have not touched) the command line entry would be "/ser=13"
+
+If you want to assign a specific TCP root port to a specific RTL1090 use the "/portbase=" option
+
+Samples:
+
+First dongle command line: "C:\dongle\rtl1090.exe /ser=13 (more options...)"
+
+Second dongle command line: "C:\dongle\rtl1090.exe /ser=14 (more options...)"
+
+//------------------------------------------------------------------------------
+
+Build 90 - 03/02/2013
+
+- Mode A/C decoder much improved. List of used A/C codes added (LIST=on, if Mode
+A/C selected)
+
+- exit dialog command line option "/exitdialog" added (for STOP button only)
+
+- Changes to SISEX:
+IF YOU ARE INTERESTED IN SISEX please refer to the sisex page on http://rtl1090.jetvision.de
+There will be a complete documentation available later that incorporates the
+changes. For now only the following info is available
+. SISEX: y/t diagram added at the bottom of page; The amplitudes of line data of
+the red and white mark, that can be set with the mouse, will be shown in the y/t diagram
+Times in y/t diagram can be measured in ms with a RIGHT or LEFT MOUSE click into the diagram.
+A manual Mode A/C decoder is implemented in the y/t diagram: When making a LEFT MOUSE
+CLICK the app tries to decode a Mode A/C code and displays it at the right bottom.
+. SISEX: folder can be created from folder selection window (right click on OPEN button)
+
+//------------------------------------------------------------------------------
+
+Build 84 - 27/01/2013
+
+- Port 30003 mapping error by command line switch corrected
+
+- Flight table overflow problem cured
+
+- Flight table layout changes
+. Colors revised as follows:
+- BROWN = descending
+- CYAN = climbing
+- WHITE ON RED - emergency
+- RED - tcas alert pending
+- PINK  - intent change (altitude reset or vhf radio freq changed or
+autopilot mode changed) (only over ICAO column)
+- YELLOW = spi (only over SSR column) (transponder ident)
+- ORANGE = alert (only over SSR column) (Mode A code changed)
+
+- Flight table update pausing and sorting
+. Updates of the Flight table can be paused when clicking onto a particular flight.
+The flight table caption changes from blue to red when the table is paused.
+Once paused the flight table can be scrolled without being refreshed (except for
+color changes, these will still be updated).
+Also, the flight table can be sorted when clicking onto the caption row and
+onto a specific column together with the CTRL key => CTRL + LEFT MOUSE
+A click onto any other line of the flight table will cancel the paused mode and
+return to an active and unsorted display.
+The sorting order is ascending for any selected column.
+The flags (last) column can not be sorted.
+
+//------------------------------------------------------------------------------
+Build 73 - 18/01/2013
+
+. FAQ button links to internet help page
+
+.Contrast and squelch sliders of SISEX have 2 independant settings re zoom or
+overview mode. More SISEX changes are in the manual on http://rtl1090.jetvision.de
+
+. Flight table colored
+- brown = descending
+- cyan = climbing
+- red - emergency
+- light red - tcas alert pending
+- pink - intent change (altitude reset or vhf radio freq changed)
+- spi = yellow (transponder ident)
+- alert = white (Mode A code changed)
+- timeout = gray (delete in 15 secs)
+
+. Additions to flight table column "*"
+"o" odd CPR position data available only
+"e" even CPR position data available only
+"~" position timed out/lost
+
+. Changes to flight table
+Altitude (FL) supplemented by selected FL (MCP)
+"=" indicates selected FL and actual FL match
+
+. New flight table columns
+"4" BDS4,0 EHS reply seen
+"5" BDS5,0 EHS reply seen
+"6" BDS6,0 EHS reply seen
+"^" DO 260A/B DF17 format seen:
+28 (BDS6,1) - 30(BDS6,2)     - 31(BDS6,3) - Indicator
+1             0                0             
+0             1                0             
+1             1                0             
+0             0                1             
+1             0                1             
+0             1                1             
+1             1                1             
+
+Due to different font pages on Windows PCs the indicators may be different.
+A indicator line is printed during the start up messages in the list, just before
+the message "Started...".
+"DO 260A/B symbols: " - Left to right is up to down in the above table.
+
+--------
+
+Port 30003 Basestation compatible TCP socket implemented.
+This socket operates by default on port 31004
+(resp. 31014, 31024 etc).  A cyan LED shows when a client is connected.
+A total of 5 clients can be served at a time.
+
+Command line switch "/30003" can override the default port setting to port 30003,
+but be sure no other application (e.g. Basestation) has port 30003 opened at the same
+time.
+
+This socket is widely compatible to Basestation TCP port 30003 format, with the
+following deviations:
+
+- The socket will deliver data in Flight Table mode only. This is to protect
+system performance
+- For performance reasons the socket sends data only every two seconds for each
+aircraft in the flight table. Only the most up-to-date message per message type
+will be sent, if this message was updated since the last transmission.
+
+The following deviations from Port 30003 standard format exists
+(ref. http://www.homepages.mcb.net/bones/SBS/Article/Barebones42_Socket_Data.htm) :
+- STA => only RM, OK and AD submessages are sent
+- SEL, CLK => not sent at all
+- Session, aircraft and flight database fields are filled with 111,1111,111111
+s as in Planeplotter
+- Time is in full seconds only
+- GS and True Track are in full knots/degrees only
+- DF18 TIS-B modes may not be supported
+
+Entry of a Home Position (optionally for port 30003 messages only)
+The home position can be entered in the [CONFIG] dialog. Entry of a home
+position accelerates aircraft position finding. Just copy your entry from
+Planeplotter into the fields of the Config dialog.
+The use of the home position can be disabled, e.g. for mobile use,
+by unchecking the [USE] box.
+For airport use of RTL1090 the surface position cannot be determined unambigously
+without entry of a home position. Without a home position aircraft surface positions
+may be displaced by 90°, 180° or 270° of longitude.
+
+
+================================================================================
+
+Build 69 - 05/01/2013
+
+- DF11 packets with SI>48 enabled
+- Flight list: "*" indicates position Lat/Long available
+- Beast format stuffing bug removed
+
+SIS Explorer added.
+Please READ the comprehensive summary at http://rtl1090.jetvision.de
+(select SISEX from menu bar)
+before using this very powerful techie tool.
+
+================================================================================
+
+Build 66 - 23/12/12
+
+This update fixes a bug in the Beast binary output that may have prevented a few
+frames to reach Planeplotter.
+
+No other changes.
+
+================================================================================
+
+Build 62 - 18/12/12
+
+Flight list altitude error removed
+Mode A/C performance restored
+
+================================================================================
+
+Build 61 - 16/12/12
+- System resource usage and app speed enhanced
+- Mode-S decoder enhanced and internal strict verification implemented to avoid
+garbage being transmitted or listed
+- Banners removed
+- Flight list completed
+- List flicker surpressed
+
+Please note that the Flight List has a bug in relation to altitude display.
+I will not be able to work on the project for some time, so I release it as is.
+Also I would be interested in any comments on the performance in a high traffic
+environment.
+
+- Multi-dongle UDP packet concentrator mode
+===========================================
+Several dongles can be chained to one RTL1090 instance that serves as a TCP
+server to PP. You can either combine several Mode-S or Mode-S and Mode A/C data
+streams. For further details see the RTL1090 operating manual at
+http://rtl1090.jetvision.de  - Select RTL1090 manual from the side bar
+
+A complete description is now available from the OPERATING MANUAL at
+http://rtl1090.jetvision.de  - Select RTL1090 manual from the side bar
+
+================================================================================
+Build 57 = 11/12/12
+- Gain list disabled when TUNER AGC on
+- Mode A/C detection improved
+
+Command line paramaters
+=======================
+- Commandline parameter "/run" starts app after a few seconds
+- Commandline parameter "/min" minimizes app after start
+- Commandline parameter "/avr" outputs data at TCP port in AVR format
+- Commandline parameter "/log" creates a logfile from the list disply
+Logs are stored when list refreshes. Please note that list display and/or
+log files slow down the system considerably and packets may get lost
+
+Multi-dongle operations
+=======================
+Several dongles can be operated in parallel by multiple
+instances of RTL1090.
+Usually there is no need to re-install the ZADIG driver for each dongle/USB slot,
+just plug-in the dongle and start another instance of the app.
+The dongle should be found and connected automatically.
+I do not know in which order dongles are enumerated, so the device ID is in
+order of instance starts.
+
+TCP server ports: for a specific instance the port number is 31001 + n x 10.
+I.e. device 0 is port 31001; device 1 is port 31011, etc. The current TCP
+server port is shown in the status bar.
+
+If you start multiple instances from the same folder the same settings will
+be used and the last settings of any instance will be stored in the same settings
+file. It is recommended to use different folder for multiple instances.
+
+Aircraft list
+=============
+An aircraft list is available when the log list is not displayed.
+For now it consists only of:
+- Aircraft ID (ICAO code)
+- Flight Level
+Inactive aircraft will be delete after 1 min.
+The list is not sorted.
+The list will be further expanded in next releases.
+
+================================================================================
+
+Build 54 = 24/11/12:
+
+- gain silder disabled when TUNER AGC on
+- FFT spectrum removed
+- RTL AGC button posts message when clicked
+- application minimizes to systray
+- list display logic revised to save performance during scroll and update
+- additional LED added: 0-10-20-40-80-120 msgs/sec
+- consecutive SSR codes displayed as dots
+- massive housekeeping and vacuum cleaning ;-)
+
+Build 51 = 18/11/12:
+
+- major bug in queue handling corrected
+- automatic threshold detector implemented
+- chip decoder Mode-S adjusted; threshold calculation revised for +-3dB
+- Mode A/C re-enbled, was lost in B50
+- chip decoder Mode-AC adjusted; theshold calculation revised for +-3dB
+- A/C Frame bits need to be within 5 units
+- double detector Mode-AC implemented; only codes that are shown at least twice
+and consecutive are processed. This is permissable as the radar sweep generates
+a bunch of replies, though interleaved replies A-C-A-C may suffer
+- flight level converter for Mode A/C corrected (data shown in (Fxxx))
+- Squawks that have only one single bit set are surpressed (except 2000 and 1000)
+- List display shows last three bytes of any packet xor'ed by CRC.
+Last three bytes should either show 00 00 00 for DF11 and 17 - or - aircraft id
+for other DF.
+- Mode-S packets DF17 of which a CRC is not valid (last 3 bytes = 00 00 00 in
+display are not forwarded to output and display
+- Mode-S packets DF11 of which a CRC is not valid (last 3 bytes = 00 00 xx in
+display are not forwarded to output and display, xx in 00 to 3F
+- Successful data rate displayed in status bar (second from left)

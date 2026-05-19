@@ -1,0 +1,11 @@
+# Tools (large binaries — download separately)
+tools/
+
+# Build artifacts
+*.zip
+*.o
+*.obj
+
+# Temp files
+*.log
+*.tmp
